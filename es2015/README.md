@@ -142,13 +142,276 @@ for (let  i = 0; i < 2; i++) {
 console.log(udpateFunction[0]());      // 0
 ```
 
+---
 
+# const
 
+`const` 변수는 나중에 바꿀 수없는 값으로 즉시 초기화 함
 
+``` js
+const MARKUP_PCT = 100;
+console.log(MARKUP_PCT);    // 100
+```
 
+``` js
+const MARKUP_PCT;
+console.log(MARKUP_PCT);    // SyntaxError
+```
 
-----
+``` js
+const MARKUP_PCT = 100;
+MARKUP_PCT = 10;
+console.log(MARKUP_PCT);   // TypeError
+                           // Assignment to constant variable.
+```
+
+---
+
+``` js
+const MARKUP_PCT = 100;
+
+if (MARKUP_PCT > 0) {
+  const MARKUP_PCT = 10;
+}
+
+console.log(MARKUP_PCT);    // 100
+                            // block scope
+```
+
+---
 
 # 변수 선언 방법
+
 ![](https://pbs.twimg.com/media/B9-Pt5lIgAAXLOm.png:large)
+
+---
+
+Arrow Function `=>`
+===
+
+---
+
+# syntax
+
+``` js
+let getPrice = function() {
+  return 5.59;
+}
+```
+
+to Arrow Function
+
+``` js
+let getPrice = () => 5.99;
+
+console.log(typeof getPrice);    // function
+console.log(getPrice());         // 5.99
+```
+
+
+``` js
+let getPrice = ()
+    => 5.99;
+console.log(typeof getPrice);    // SyntaxError
+```
+
+---
+
+# argument
+
+``` js
+let getPrice = count => count * 4.00;
+console.log(getPrice(2));        // 8
+```
+
+``` js
+let getPrice = (count, tax) => count * 4.00 * (1 + tax);
+console.log(getPrice(2, .07);    // 8.56 
+```
+
+---
+
+# block
+
+``` js
+let getPrice = (count, tax) => {
+  let price = count * 4.00;
+  price *= (1 + tax);
+  return price;
+}
+
+console.log(getPrice(2, .07);    // 8.56
+```
+
+---
+
+# this context
+
+``` js
+document.addEventListener("click", function() {
+  console.log(this);    // #document
+});
+```
+
+``` js
+document.addEventListener("click", () => console.log(this));
+// Window { ... }
+```
+
+---
+
+``` js
+let invoice = {
+  number: 123,
+  process: function() {
+    console.log(this);
+  }
+};
+
+invocie.process();    // Object { number: 123, ... } 
+```
+
+---
+
+``` js
+let invoice = {
+  number: 123,
+  process: () => console.log(this);
+};
+
+invocie.process();    // Window { ... }
+```
+
+---
+
+``` js
+let invoice = {
+  number: 123,
+  process: function() {
+    return () => console.log(this.number);
+  }
+};
+
+invocie.process()();    // 123
+```
+
+---
+
+``` js
+let invoice = {
+  number: 123,
+  process: function() {
+    return () => console.log(this.number);
+  }
+};
+
+let newInvoice = {
+  number: 456
+};
+
+invoice.process().bind(newInvoice)();    // 123
+invoice.process().call(newInvoice);      // 123
+```
+
+---
+
+``` js
+let getPrice = () => 5.99;
+console.log(getPrice.hasOwnProperty("prototype")); // false
+```
+
+---
+
+Default Function Parameters
+===
+
+---
+
+``` js
+let getProduct = function(productId = 1000) {
+  console.log(productId);
+};
+
+getProduct();    // 1000
+```
+
+``` js
+let getProduct = function(productId = 1000, type = "software") {
+  console.log(productId + ", " + type);
+};
+
+getProduct(undefined, "hardware");    // 1000, hardware
+```
+
+---
+
+``` js
+let getTotal = function(price, tax = price * 0.07) {
+  console.log(price + tax);
+};
+
+getTotal(5.00);    // 5.35
+```
+
+---
+
+``` js
+let baseTax = 0.07;
+let getTotal = function(price, tax = price * baseTax) {
+  console.log(price + tax);
+};
+
+getTotal(5.00);    // 5.35
+```
+
+---
+
+``` js
+let generateBaseTax = () => 0.07;
+let getTotal = function(price, tax = price * generateBaseTax()) {
+  console.log(price + tax);
+};
+
+getTotal(5.00);    // 5.35
+```
+
+---
+
+``` js
+let getTotal = function(price, tax = price * 0.07) {
+  console.log(arguments.length);
+};
+
+getTotal(5.00);    // 1
+```
+
+---
+
+``` js
+let getTotal = function(price = adjustment, adjustment = 1.00) {
+  console.log(price + adjustment);
+};
+
+getTotal();    // SyntaxError
+               // Use before declaration
+```
+
+---
+
+``` js
+let getTotal = function(price = adjustment, adjustment = 1.00) {
+  console.log(price + adjustment);
+};
+
+getTotal(5.00);    // 6
+```
+
+---
+
+``` js
+let getTotal = new Function("price = 20.00", "return price;");
+console.log(getTotal());    // 20
+```
+
+
 
