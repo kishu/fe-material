@@ -413,5 +413,232 @@ let getTotal = new Function("price = 20.00", "return price;");
 console.log(getTotal());    // 20
 ```
 
+---
+
+Rest and Spread
+===
+
+---
+
+`...` as rest operator
+
+``` js
+let showCategories = function(productId, ...categories) {
+  console.log(categories instanceof Array);
+  console.log(categories);
+};
+
+showCategories(123, "search", "advertising");
+
+// true
+// ["search, "advertising"]
+```
+
+---
+
+``` js
+let showCategories = function(productId, ...categories) {
+  console.log(categories);
+};
+
+showCategories(123);    // []
+```
+
+---
+
+``` js
+let showCategories = function(productId, ...categories) {
+};
+
+console.log(showCategories.length);               // 1
+```
+
+``` js
+let showCategories = function(productId, ...categories) {
+  console.log(arguments.length);
+};
+
+showCategories(123, "search", "advertising");    // 3
+```
+
+``` js
+let showCategories = 
+  new Function("...categories", "return categories;");
+
+console.log(showCategories("search", "advertising"));
+// ["search", "advertising"]
+```
+
+---
+
+`...` as spread operator
+
+```js
+let prices = [12, 20, 18];
+let maxPrice = Math.max(...prices);
+
+console.log(maxPrice);          // 20
+```
+
+``` js
+let prices = [12, 20, 18];
+let newPriceArray = [...prices];
+
+console.log(newPriceArray);    // [12, 20, 18]
+```
+
+---
+
+``` js
+let newPriceArray = Array(...[,,]);
+console.log(newPriceArray);    // [undefined, undefined]
+```
+
+``` js
+let newPriceArray = [...[,,]];
+console.log(newPriceArray);    // [undefined, undefined]
+```
+
+---
+
+``` js
+let maxCode = Math.max(..."43210");
+console.log(maxCode);    // 4
+```
+
+``` js
+let codeArray = ["A", ..."BCD", "E"];
+console.log(codeArray);    // ["A", "B", "C", "D", "E]
+```
+
+----
+
+Object Literal Extension
+===
+
+----
+
+``` js
+let price = 5.99;
+let quantity = 30;
+
+let productView = {
+ price,
+ quantity
+};
+
+console.log(productView);    // { price: 5.99, quantity: 30 }
+```
+
+---
+shorthand function is arrow function
+``` js
+let price = 5.99;
+let quantity = 30;
+
+let productView = {
+ price,
+ quantity,
+ calculateValue() {
+   return this.price * this.quantity;
+ }
+};
+
+console.log(productView.calculatevalue());
+// 50.900000000000006
+```
+
+---
+
+
+``` js
+let price = 5.99;
+let quantity = 30;
+
+let productView = {
+ price: 7.99,
+ quantity: 1,
+ calculateValue() {
+   return this.price * this.quantity;
+ }
+};
+
+console.log(productView.calculatevalue());
+// 50.900000000000006
+```
+
+---
+
+``` js
+let price = 5.99;
+let quantity = 30;
+
+let productView = {
+ price,
+ quantity,
+ "calculate Value"() {
+   return this.price * this.quantity;
+ }
+};
+
+console.log(productView.calculatevalue());
+// 50.900000000000006
+```
+
+---
+
+``` js
+let field = "dynamicField";
+let price = 5.99;
+
+let productView = {
+  [field]: price
+};
+
+console.log(productView);    // { dynamicField: 5.99 }
+```
+
+----
+
+``` js
+let field = "dynamicField";
+let price = 5.99;
+
+let productView = {
+  [field + "-001"]: price
+};
+
+console.log(productView);    // { dynamicField-001: 5.99 }
+```
+
+---
+
+``` js
+let method = "doIt";
+let productView = {
+  [method + "-001"]() {
+    console.log("in a method");
+  };
+};
+
+productView["doIt-001"]();    // in a method
+```
+
+---
+
+getter / setter
+
+``` js
+let ident = "productId";
+let productView = {
+  get [ident]() {
+    return true;
+  },
+  set [ident](value) { }
+};
+
+console.log(productView.productId);    // true
+```
+
 
 
