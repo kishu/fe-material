@@ -640,5 +640,303 @@ let productView = {
 console.log(productView.productId);    // true
 ```
 
+----
+
+for ... of Loops
+===
+
+---
+
+``` js
+let categories = ["hardware", "software", "vaporware"];
+
+for (let item of caegories) {
+  console.log(item);
+  // hardware
+  // software
+  // vaporware
+}
+```
+
+---
+
+``` js
+let categories = [,,];
+
+for (let item of categories) {
+  console.log(item);
+  // undefined
+  // undefined
+} 
+```
+
+---
+
+``` js
+let codes = "ABCDF";
+let count 0;
+
+for (let code of codes) {
+  count++;
+}
+
+console.log(count);    // 5
+```
+
+---
+
+Octal and Binary Literals
+===
+
+---
+
+# Octal value
+
+``` js
+let value = 0o10;
+console.log(value);    // 8
+
+let value = 0O10;
+console.log(value);    // 8
+
+let value = 0o71;
+console.log(value);    // 56
+```
+
+``` js
+
+```
+
+---
+
+# Binary value
+
+``` js
+let value = 0b10;
+console.log(value);    // 2
+
+let value = 0B10;
+coonsole.log(value)    // 2
+
+let value = 0b1101;
+coonsole.log(value)    // 13
+```
+---
+
+Template Literals
+===
+
+---
+
+``` js
+let invoiceNum = "1350";
+console.log(`Invoice Number: ${invoiceNum}`);
+
+// Invoice Number: 1350
+```
+
+``` js
+let invoiceNum = "1350";
+console.log(`Invoice Number: \${invoiceNum}`);
+
+// Invoice Number: ${invoiceNum}
+```
+
+---
+
+``` js
+let message = `A
+B
+C`;
+
+console.log(message);
+```
+```
+A
+B
+C
+```
+
+---
+
+``` js
+let invoiceNum = "1350";
+console.log("Invoice Number: ${"INV-" + invoiceNum}`);
+
+// invoiceNumber: INV-1350
+```
+
+---
+
+``` js
+function showMessage(message) {
+  let invoiceNum = "99";
+  console.log(message);
+}
+
+let invoiceNum = "1350";
+showMessage("Invoice Number: ${invoiceNum}");
+
+// Invoice Number: 1350
+```
+
+---
+
+# tagged template
+
+``` js
+function processInvoice(segments) {
+  console.log(segments);
+}
+
+processInvoice `template`;    // ["template"]
+```
+
+``` js
+function processInvoice(segments, ...values) {
+  console.log(segments);
+  console.log(values);
+}
+
+let invoiceNum = "1350";
+let amount = "2000";
+
+processInvoice `Invoice: ${invoiceNum} for ${amount}`;
+
+// ["Invoice: ", " for ", ""]
+// [1350, 2000]
+```
+
+---
+
+Destructuring
+===
+
+---
+
+``` js
+let salary = ["32000", "50000", "75000"];
+let [ low, average, high ] = salary;
+
+console.log(average);    // 50000
+```
+
+``` js
+let salary = ["32000", "50000"];
+let [ low, average, high ] = salary;
+
+console.log(high);    // undefined
+```
+
+``` js
+let salary = ["32000", "50000", "75000"];
+let [ low, , high ] = salary;
+
+console.log(high);    // 75000
+```
+
+---
+
+``` js
+let salary = ["32000", "50000", "75000"];
+let [ low, ...remaining ] = salary;
+
+console.log(remaining);    // ["50000", "75000"]
+```
+
+``` js
+let salary = ["32000", "50000"];
+let [low, average, high = "88000"] = salary;
+
+console.log(high);    // 88000
+```
+
+``` js
+let salary = ["32000", "50000", ["88000", "99000]];
+let [low, average, [actualLow, actualHigh]] = salary;
+
+console.log(actualLow);    // 88000
+```
+
+---
+
+``` js
+let salary = ["32000", "50000"];
+let low, average, high;
+[low, average, high = "88000"] = salary;
+
+console.log(high);    // 88000
+```
+
+---
+
+``` js
+function reviewSalary([low, average], high = "88000") {
+  console.log(average);
+}
+ 
+reviewSalary(["32000", "50000"]);    // 50000
+```
+
+---
+
+``` js
+let salary = {
+  low: "32000",
+  average: "5000",
+  high: "75000"
+};
+
+let { low, average, high } = salary;
+console.log(high);    // 75000
+```
+
+----
+
+# rename property
+``` js
+let salary = {
+  low: "32000",
+  average: "5000",
+  high: "75000"
+};
+
+let { low: newLow, average: newAverage, high: newHigh } = salary;
+console.log(newHigh);    // 75000
+```
+
+---
+``` js
+let salary = {
+  low: "32000",
+  average: "5000",
+  high: "75000"
+};
+
+let newLow, newAverage, newHigh;
+{ low: newLow, average: newAverage, high: newHigh } = salary;
+console.log(newHigh);    // SyntaxError
+```
+
+---
+``` js
+let salary = {
+  low: "32000",
+  average: "5000",
+  high: "75000"
+};
+
+let newLow, newAverage, newHigh;
+({ low: newLow, average: newAverage, high: newHigh } = salary);
+console.log(newHigh);    // 75000
+```
+
+---
+
+``` js
+let [maxCode, minCode] = "AZ";
+console.log(`min: ${minCode} max: ${maxCode}`);
+// min Z max A
+```
 
 
