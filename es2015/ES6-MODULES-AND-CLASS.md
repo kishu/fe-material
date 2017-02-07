@@ -469,10 +469,552 @@ console.log(window.Task === Task);         // false
 
 ---
 
+extends and super
+===
+
+---
+
+# extends
+
+``` js
+class Project {
+  constructor() {
+    console.log("constructing Project");
+  }
+}
+
+class SoftwareProject extends Project {
+
+}
+
+let p = new SoftwareProject();
+```
+
+``` text
+constructing Project
+```
+
+---
+
+# extends with constructor parameter
+
+``` js
+class Project {
+  constructor(name) {
+    console.log("constructing Project: + ${name}");
+  }
+}
+
+class SoftwareProject extends Project {
+
+}
+
+let p = new SoftwareProject("Mazatlan");
+```
+
+``` text
+constructing Project: Mazatlan
+```
+
+---
+
+# super
+
+``` js
+class Project {
+  constructor() {
+    console.log("constructing Project");
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    super();
+    console.log("constructing SoftwareProject");
+  }
+}
+
+let p = new SoftwareProject();
+```
+
+``` text
+constructing Project
+construction SoftwareProject
+```
+
+---
+
+``` js
+class Project {
+  constructor() {
+    console.log("constructing Project");
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    // super();
+    console.log("constructing SoftwareProject");
+  }
+}
+
+let p = new SoftwareProject();
+```
+
+``` text
+ReferenceError: this is not defined
+```
+
+---
+
+``` js
+class Project {
+  // constructor() {
+  //   console.log("constructing Project");
+  // }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    // super();
+    console.log("constructing SoftwareProject");
+  }
+}
+
+let p = new SoftwareProject();
+```
+
+``` text
+ReferenceError: this is not defined
+```
+
+---
+
+# using method
+
+``` js
+class Project {
+  getTaskCount() {
+    return 50;
+  }
+}
+
+class SoftwareProject extends Project {
+
+}
+
+let p = new SoftwareProject();
+console.log(p.getTaskCount());    // 50
+```
+
+---
 
 
+``` js
+class Project {
+  getTaskCount() {
+    return 50;
+  }
+}
 
+class SoftwareProject extends Project {
+  getTaskCount() {
+    return 66;
+  }
+}
 
+let p = new SoftwareProject();
+console.log(p.getTaskCount());    // 66
+```
+---
+
+``` js
+class Project {
+  getTaskCount() {
+    return 50;
+  }
+}
+
+class SoftwareProject extends Project {
+  getTaskCount() {
+    return super.getTaskCount() + 6;
+  }
+}
+
+let p = new SoftwareProject();
+console.log(p.getTaskCount());    // 56
+```
+
+---
+
+``` js
+class Project {
+  getTaskCount() {
+    return 50;
+  }
+}
+
+let SoftwareProject = {
+  getTaskCount() {
+    return super.getTaskCount() + 7;
+  }
+}
+
+Object.setPrototypeOf(softwareProject, project);
+
+console.log(softwareProject.getTaskCount());    // 57
+```
+
+---
+
+Properties for Class Instances
+===
+
+---
+
+``` js
+class Project {
+  constructor() {
+    this.location = "Mazatlan";
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    super();
+  }
+}
+
+let p = new SoftwareProject();
+console.log(p.location);    // Mazatlan
+```
+
+---
+
+``` js
+class Project {
+  constructor() {
+    let location = "Mazatlan";
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    super();
+  }
+}
+
+let p = new SoftwareProject();
+console.log(p.location);    // undefined
+```
+
+---
+
+``` js
+class Project {
+  constructor() {
+    this.location = "Mazatlan";
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    super();
+    this.location = this.location + " Beach";
+  }
+}
+
+let p = new SoftwareProject();
+console.log(p.location);    // Mazatlan Beach
+```
+
+---
+
+Static Members
+===
+
+---
+
+``` js
+class Projcet {
+  static getDefaultId() {
+    return 0;
+  }
+}
+
+console.log(Project.getDefaultId());    // 0
+```
+
+---
+
+# static method
+
+``` js
+class Projcet {
+  static getDefaultId() {
+    return 0;
+  }
+}
+
+var p = new Project();
+console.log(p.getDefaultId());
+```
+
+``` text
+Error: Object doesn't support property or method getDefaultId
+```
+
+---
+
+# static property is not supprot
+
+``` js
+class Project {
+  static let id = 0;
+}
+
+console.log(Project.id);
+```
+
+``` text
+Syntax Error: ( expected
+```
+
+---
+
+# not recommended
+
+``` js
+class Project {
+  
+}
+
+Project.id = 99;
+
+console.log(Project.id);    // 99
+```
+
+----
+
+new.target
+===
+
+---
+
+``` js
+class Project {
+  constructor() {
+    console.log(typeof new.target);
+    console.log(new.target);
+  }
+}
+
+let p = new Project();
+```
+
+``` text
+> function
+> constructor() {
+    console.log(typeof new.target);
+    console.log(new.target);
+  }
+````
+
+---
+
+``` js
+class Project {
+  constructor() {
+    console.log(new.target);
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    super();
+  }
+}
+
+let p = new SoftwareProject();
+```
+
+``` text
+> constructor() {
+    super();
+  }
+```
+
+---
+
+``` js
+class Project {
+  constructor() {
+    console.log(new.target);
+  }
+}
+
+class SoftwareProject extends Project {
+
+}
+
+let p = new SoftwareProject();
+```
+
+``` text
+> constructor(...args) {
+    super(...args);
+  }
+```
+
+---
+
+``` js
+class Project {
+  constructor() {
+    console.log(new.target.getDefaultId());
+  }
+}
+
+class SoftwareProject extends Project {
+  static getDefaultId() {
+    return 99;
+  }
+}
+
+let p = new SoftwareProject();
+```
+
+``` text
+> 99
+```
+
+---
+
+summary
+===
+
+---
+
+# Module Basics
+
+``` js
+// base.js
+import { projectId } from "module1.js";
+console.log(projectId);
+```
+
+``` js
+//module1.js;
+export let projectId = 99;
+```
+
+---
+
+# Named Exports
+``` js
+// base.js
+import { project } from "module1.js";
+project.projectId = 8000;
+console.log(project.projectId);
+```
+
+``` js
+//module1.js
+export let project = {
+  projectId: 99;
+}
+```
+
+---
+
+# classes
+
+``` js
+class Task {
+  constructor() {
+    console.log("constructing Task");
+  }
+  showId() {
+    console.log("99");
+  }
+}
+
+let task = new Task();
+```
+
+---
+
+# extends and super
+
+``` js
+class Project {
+  constructor() {
+    console.log("constructing Project");
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    super();
+    console.log("constructing SoftwareProject");
+  }
+}
+
+let p = new SoftsareProject();
+```
+
+---
+
+# Constructor Function Properties
+
+``` js
+class Project {
+  constructor() {
+    this.name = "Mazatlan";
+  }
+}
+
+class SoftwareProject extends Project {
+  constructor() {
+    super();
+  }
+}
+
+let p = new SoftsareProject();
+console.log(p.name);
+```
+
+---
+
+# Static Members
+
+``` js
+class Project {
+  static getDefaultId() {
+    return 0;
+  }
+}
+
+console.log(Project.getDefaultId());
+```
+
+---
+
+# new.target
+
+``` js
+class Project {
+  constructor() {
+    console.log(new.target);
+  }
+}
+
+class SoftwareProject extends Project {
+
+}
+
+let p = new SoftwareProject();
+```
 
 
 
