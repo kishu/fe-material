@@ -1,45 +1,9 @@
-
-Introduction
-===
-
----
-
-# ECMA 스크립트 
-[Ecma 인터내셔널](http://www.ecma-international.org/)의 ECMA-262 기술 규격
-
-| year | desc |
-| :- | :- |
-| 1995 | 넷스케이프의 Brendan Eich 10일만에 Mocha 완성 |
-| 1995.09 | LiveScript로 변경 |
-| 1995.12 | Sun에서 상표 라이센스를 받으며 JavaScript로 변경 |
-| 1996 - 97 | 표준화를 위해 JavaSciript 기술 규격을 Ecma에 제출 |
-| 2015.06 | 6번째 에디션 ES6, ES2015 |
-| 2016.07 | 7번째 에디션 ES7, ES2016 |
-
-ES.Next - 앞으로의 JavaScript
-
----
-
-# Using ES6
-http://kangax.github.io/compat-table/es6/
-
-| browser / mobile | compatibility |
-| :- | :-: |
-| Edge 15 | 95% |
-| FireFox 51 | 94% |
-| Chrome 58 / Opera 45 | 97% |
-| Safari 10.1 | 100% |
-| Android 5.1 | 25% |
-| iOS 10 | 100% |
-
----
-
 New ES6 Syntax
 ===
 
 ---
 
-# New ES6 Syntax
+## New ES6 Syntax
 
 `let`, `const` and Block Scoping
 Arrow Functions `=>`
@@ -939,4 +903,175 @@ console.log(`min: ${minCode} max: ${maxCode}`);
 // min Z max A
 ```
 
+---
 
+Advanced Destructuring
+===
+
+---
+
+``` js
+let [ high, low ] = [,];
+console.log(`high: ${high} low: ${low}`);
+// high: undefined low: undefined
+```
+
+``` js
+let [ high, low ] = undefined;
+console.log(`high: ${high} low: ${low}`);
+// RuntimeError: Unable to get property 'Symbol.iterator'
+// of undefined or null reference
+```
+
+``` js
+let [ high, low ] = null;
+console.log(`high: ${high} low: ${low}`);
+// RuntimeError: Unable to get property 'Symbol.iterator'
+// of undefined or null reference
+```
+
+---
+
+``` js
+try {
+  let [ high, low, ] = undefined;
+}
+catch(e) {
+  console.log(e.name);    // TypeError
+}
+```
+
+---
+
+``` js
+let [ high, low, ] = [500, 200];
+console.log(`high: ${high} low: ${low}`);
+// high: 500 low: 200
+```
+
+``` js
+for (let [a, b] of [[5, 10]]) {
+  console.log(`${a} ${b}`);    // 5 10
+  count++;
+}
+
+console.log(count);            // 1
+```
+---
+
+summary
+===
+
+---
+
+# let, const and Block Scoping
+
+``` js
+let productId = 12;
+console.log(productId);
+```
+
+---
+
+# Arrow Functions
+
+``` js
+let getPrice = count => count * 4.00;
+console.log(getPrice(2));
+```
+
+---
+
+# Default Function Parameters
+
+``` js
+let getTotal = function(price, tax = price * 0.07) {
+  console.log(price + tax);
+}
+
+getTotal(5.00);
+```
+
+---
+
+# Rest and Spread Operators
+
+``` js
+let showCategories = function(productId, ...categories) {
+}
+
+console.log(showCategories.length);
+```
+
+``` js
+let prices = [12, 20, 18];
+let maxPrice = Math.max(...prices);
+
+console.log(maxPrice);
+```
+
+---
+
+# Object Literal Extensions
+
+``` js
+let method = "doIt";
+let productView = {
+  [method + "-001"]() {
+    console.log("in a method");
+  }
+};
+
+productView["doIt-001"]();
+```
+
+---
+
+# for ... of Loops
+
+``` js
+let codes = "ABCDF";
+let count = 0;
+
+for (let code of codes) {
+  count++;
+}
+
+console.log(count);
+```
+
+---
+
+# Octal and Binary Literals
+
+``` js
+let value = 0o10;
+console.log(value);
+```
+
+``` js
+let value = 0b10;
+console.log(value);
+```
+
+---
+
+# Template Literals
+
+``` js
+let invoiceNum = "1350";
+console.log("Invoice Nuber: ${invoiceNum}');
+```
+
+---
+
+# Destructuring
+
+``` js
+let salary = ["32000", "50000", "75000"];
+let [ low, average, high ] = salary;
+
+console.log(average);
+```
+
+---
