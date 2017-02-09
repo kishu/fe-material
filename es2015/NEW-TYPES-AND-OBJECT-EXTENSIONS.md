@@ -382,3 +382,110 @@ console.log(Object.is(amount, total));
 ```
 
 ---
+
+String Extensions
+===
+
+---
+
+``` js
+let title = "Santa Barbara Surf Riders";
+console.log(title.startsWith("Santa"));
+console.log(title.endsWith("Rider"));
+console.log(title.includes("ba"));
+```
+
+``` text
+> true
+> false
+> true
+```
+
+---
+
+``` js
+let title = "Surfer's \u{1f3c4} Blog";
+console.log(title);
+
+let surfer = "\u{1f3c4}";
+console.log(surfer.length);
+```
+
+``` text
+> Surfer's 🏄  Blog
+> 2
+```
+
+---
+
+``` js
+var surfer = "\u{1f30a}\u{1f3c4}\u{1f40b}";
+
+console.log(Array.from(surfer).length);
+console.log(surfer);
+```
+
+``` text
+> 3
+> 🌊 🏄 🐋
+```
+
+---
+
+``` js
+let title = "Mazatla\u0301n";
+console.log(`${title}: ${title.length}`);
+
+let normalizeTitle = title.normalize();
+console.log(`${normalizeTitle}: ${normalizeTitle.length}`);
+```
+
+``` text
+Mazatlán: 9
+Mazatlán: 8
+```
+
+---
+
+``` js
+let title = "Mazatla\u0301n";
+
+console.log(title.normalize().codePointAt(7));
+console.log(title.normalize().codePointAt(7).toString(16));
+console.log(String.fromCodePoint(0x1f3c4);
+```
+
+``` text
+> 110
+> 6e
+> 🏄
+```
+
+---
+
+``` js
+let title = "Surfer";
+let output = String.raw`${title} \u{1f3c4|\n`;
+
+console.log(output);
+```
+
+``` text
+> Surfer \u{1f3c4}\n
+```
+
+---
+
+# repeat
+
+``` js
+let wave = "\u{1f30a}";
+console.log(wave.repeat(10));
+```
+
+``` text
+> 🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊
+```
+
+---
+
