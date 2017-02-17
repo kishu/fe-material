@@ -489,4 +489,386 @@ console.log(it.next());
 
 ---
 
+Promise
+===
 
+---
+
+# resolve
+
+``` js
+function doAsync() {
+  let p = new Promise((resolve, reject) => {
+    console.log("in promise code");
+
+     setTimeout(() => {
+      console.log("resolving...");
+      resolve();
+    }, 2000);
+  });
+  
+  return p;
+}
+
+let promise = doAsync();
+```
+
+``` text
+> in promise code
+
+(2 second delay)
+> resolving...
+```
+
+---
+
+# reject
+
+``` js
+function doAsync() {
+  let p = new Promise((resolve, reject) => {
+    console.log("in promise code");
+
+     setTimeout(() => {
+      console.log("rejecting...");
+      reject();
+    }, 2000);
+  });
+  
+  return p;
+}
+
+let promise = doAsync();
+```
+
+``` text
+> in promise code
+
+(2 second delay)
+> rejecting...
+```
+
+---
+
+# then
+
+``` js
+function doAsync() {
+  // returns a Promise will be rejected
+}
+
+doAsync().then(() => {
+  console.log("Fulfilled!");
+}, () => {
+  console.log("Rejected!");
+)};
+```
+
+``` text
+(wait for promise code resolution)
+> Rejected!
+```
+
+---
+
+``` js
+function doAsync() {
+  // returns a Promise will be resolved
+}
+
+doAsync().then(() => {
+  console.log("Fulfilled!");
+}, () => {
+  console.log("Rejected!");
+)};
+```
+
+``` text
+(wait for promise code resolution)
+> Fulfilled!
+```
+
+---
+
+``` js
+function doAsync() {
+  // returns a Promise will be rejected using:
+  // reject("Database Error");
+}
+
+doAsync().then((value) => {
+  console.log(`Fulfilled! ${vaule}`);
+}, (reason) => {
+  console.log(`Rejected! ${value}`);
+)};
+```
+
+``` text
+(wait for promise code resolution)
+> Rejected! Database Error
+```
+
+---
+
+``` js
+function doAsync() {
+  // returns a Promise will be resolve using:
+  // resolve("OK");
+}
+
+doAsync().then(value => {
+  console.log(`Fulfilled! ${vaule}`);
+}, reason => {
+  console.log(`Rejected! ${reason}`);
+)};
+```
+
+``` text
+(wait for promise code resolution)
+> Fulfilled! OK
+```
+
+---
+
+``` js
+function doAsync() {
+  // returns a Promise will be resolve using:
+  // resolve("OK");
+}
+
+doAsync().then(value => {
+  console.log(`Fulfilled! ${vaule}`);
+  return "For Sure";
+}).then(value => {
+  console.log(`Really! ${value}`);
+)};
+```
+
+``` text
+(wait for promise code resolution)
+> Fulfilled! OK
+> Really! For Sure
+```
+
+---
+
+``` js
+function doAsync() {
+  // returns a Promise, will be rejected using:
+  // reject("No Go");
+}
+
+doAsync().catch(reason => {
+  console.log(`Error: ${reason}`);
+});
+```
+
+``` text
+(wait for resolution)
+> Error: No Go
+```
+
+---
+
+More Promise Features
+===
+
+---
+
+``` js
+function doAsync() {
+  let p = new Promise((resolve, reject) => {
+    console.log("in promise code");
+    setTimeout(() => {
+      resolve(getAnotherPromise());
+    }, 2000);
+  });
+  
+  return p;
+}
+
+doAsync().then(() => {
+  console.log("OK")
+}, () => {
+  console.log("Nope");
+});
+```
+
+``` text
+> in promise code
+> Nope
+```
+
+---
+
+``` js
+function doAsync() {
+  return Promise.resolve("Some String");
+}
+
+doAsync().then((value) => {
+  console.log(`OK: ${value}`);
+}, (reason) => {
+  console.log(`Nope: ${reason}`);
+});
+```
+
+``` text
+> OK: Some String
+```
+
+---
+
+``` js
+function doAsync() {
+  return Promise.reject("Some Error");
+}
+
+doAsync().then((value) => {
+  console.log(`OK: ${value}`);
+}, (reason) => {
+  console.log(`Nope: ${reason}`);
+});
+```
+
+``` text
+> Nope: Some Error
+```
+
+---
+
+# Promise.all with resolve
+
+``` js
+let p1 = new Promise(...);
+let p2 = new Promise(...);
+
+Promise.all([p1, p2]).then((value) => {
+  console.log("OK");
+}, (reason) => {
+  console.log("Nope");
+});
+
+// asume p1 resolves after 3 seconds
+// asume p2 resolves after 5 seconds
+```
+
+``` text
+(5 second delay)
+> OK
+```
+
+---
+
+# Promise.all with resolve and reject
+
+``` js
+let p1 = new Promise(...);
+let p2 = new Promise(...);
+
+Promise.all([p1, p2]).then((value) => {
+  console.log("OK");
+}, (reason) => {
+  console.log("Nope");
+});
+
+// asume p1 resolves after 1 seconds
+// asume p2 is rejected after 2 seconds
+```
+
+``` text
+(2 second delay)
+> Nope
+```
+
+---
+
+# Promise.all with reject
+
+``` js
+let p1 = new Promise(...);
+let p2 = new Promise(...);
+
+Promise.all([p1, p2]).then((value) => {
+  console.log("OK");
+}, (reason) => {
+  console.log("Nope");
+});
+
+// asume p1 is rejected after 3 seconds
+// asume p2 is rejected after 5 seconds
+```
+
+``` text
+(3 second delay)
+> Nope
+```
+
+---
+
+# Promise.race
+
+``` js
+let p1 = new Promise(...);
+let p2 = new Promise(...);
+
+Promise.race([p1, p2]).then((value) => {
+  console.log("OK");
+}, (reason) => {
+  console.log("Nope");
+});
+
+// asume p1 resolves after 3 seconds
+// asume p2 resolves after 5 seconds
+```
+
+``` text
+(3 second delay)
+> OK
+```
+
+---
+
+# Promise.race
+
+``` js
+let p1 = new Promise(...);
+let p2 = new Promise(...);
+
+Promise.race([p1, p2]).then((value) => {
+  console.log("OK");
+}, (reason) => {
+  console.log("Nope");
+});
+
+// asume p1 is rejected after 3 seconds
+// asume p2 resolves after 5 seconds
+```
+
+``` text
+(3 second delay)
+> Nope
+```
+
+---
+
+# Promise.race
+
+``` js
+let p1 = new Promise(...);
+let p2 = new Promise(...);
+
+Promise.race([p1, p2]).then((value) => {
+  console.log("OK");
+}, (reason) => {
+  console.log("Nope");
+});
+
+// asume p1 resolves after 4 seconds
+// asume p2 is rejected after 5 seconds
+```
+
+``` text
+(4 second delay)
+> OK
+```
