@@ -872,3 +872,106 @@ Promise.race([p1, p2]).then((value) => {
 (4 second delay)
 > OK
 ```
+
+=== 
+
+Summary
+
+---
+
+# Iterators
+
+``` js
+let ids = [9000, 9001, 9002];
+let it = ids[Symbol.iterator]();
+
+it.next()
+it.next()
+
+console.log(it.next());
+```
+
+---
+
+# Generators
+
+``` js
+function *process() {
+  let nextId = 7000;
+  while(true) 
+    yield(nextId++);
+}
+
+let it = process();
+it.next();
+
+console.log(it.next().value);
+```
+
+---
+
+# Yielding
+
+``` js
+function *process() {
+  let newArray = [yield, yield, yield];
+  console.log(newArray[2]);
+}
+```
+
+---
+
+# throw and return
+
+``` js
+function *process() {
+  try {
+    yield 9000;
+    yield 9001;
+    yield 9002;
+  }
+  catch(e) {
+  
+  }
+}
+
+let it = process();
+
+console.log(it.next().value);
+console.log(it.throw("foo"));
+console.log(it.next());
+```
+
+---
+
+# Promises
+
+``` js
+function doAsync() {
+  let p = new Promise((resolve, reject) => {
+    console.log("in promise code");
+    setTimeout(() => {
+      console.log("resolving...");
+      resolve();
+    }, 2000);
+  });
+  return  p;
+}
+
+let promise = doAsync();
+```
+
+---
+
+# Promise.all() and Promise.race()
+
+``` js
+let p1 = new Promise(...);
+let p2 = new Promise(...);
+
+Promise.all([p1, p2]).then((value) => {
+  console.log("OK");
+}, (reason) => {
+  console.log("Nope");
+});
+```
